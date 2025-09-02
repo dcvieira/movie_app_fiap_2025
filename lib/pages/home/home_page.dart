@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app_fiap25/models/movie_model.dart';
-import 'package:movie_app_fiap25/pages/home/widgets/movies_horizontal_list.dart';
-import 'package:movie_app_fiap25/pages/home/widgets/nowplayng_list.dart';
-import 'package:movie_app_fiap25/services/movie_services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,19 +8,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final MovieServices movieServices = MovieServices();
-  late Future<Result> popular;
-  late Future<Result> nowPlaying;
-  late Future<Result> upcoming;
-
-  @override
-  void initState() {
-    popular = movieServices.getPopularMovies();
-    nowPlaying = movieServices.getNowPlayingMovies();
-    upcoming = movieServices.getUpcomingMovies();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,21 +28,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              FutureBuilder(
-                future: nowPlaying,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-                  if (snapshot.hasData) {
-                    return NowPlayingList(movies: snapshot.data!.movies);
-                  }
-                  return const Center(child: Text('No data found'));
-                },
-              ),
+              // Now Playing List
               const SizedBox(height: 20),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -72,18 +41,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              FutureBuilder(
-                future: popular,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-                  return MoviesHorizontalList(movies: snapshot.data!.movies);
-                },
-              ),
+              // Upcoming List
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text(
@@ -95,18 +53,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              FutureBuilder(
-                future: upcoming,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-                  return MoviesHorizontalList(movies: snapshot.data!.movies);
-                },
-              ),
+              // Upcoming List
               const SizedBox(height: 20),
             ],
           ),
