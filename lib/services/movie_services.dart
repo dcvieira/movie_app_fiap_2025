@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:movie_app_fiap25/common/constants.dart';
+import 'package:movie_app_fiap25/models/movie_details_model.dart';
 import 'package:movie_app_fiap25/models/movie_model.dart';
 
 class MovieServices {
@@ -50,5 +51,27 @@ class MovieServices {
       return Result.fromJson(jsonDecode(response.body));
     }
     throw Exception('failed to load now playing movies');
+  }
+
+  Future<MovieDetailModel> getMovieDetail(int movieId) async {
+    final endPoint = 'movie/$movieId';
+    final url = '$baseUrl$endPoint$key';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return MovieDetailModel.fromJson(jsonDecode(response.body));
+    }
+    throw Exception('failed to load  movie details');
+  }
+
+  Future<Result> getMovieRecommendations(int movieId) async {
+    final endPoint = 'movie/$movieId/recommendations';
+    final url = '$baseUrl$endPoint$key';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return Result.fromJson(jsonDecode(response.body));
+    }
+    throw Exception('failed to load  movie details');
   }
 }
