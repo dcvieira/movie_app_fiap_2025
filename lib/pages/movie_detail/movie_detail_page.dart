@@ -6,8 +6,7 @@ import 'package:movie_app_fiap25/models/movie_model.dart';
 import 'package:movie_app_fiap25/services/movie_services.dart';
 
 class MovieDetailPage extends StatefulWidget {
-  final int movieId;
-  const MovieDetailPage({super.key, required this.movieId});
+  const MovieDetailPage({super.key});
 
   @override
   State<MovieDetailPage> createState() => _MovieDetailPageState();
@@ -21,16 +20,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   @override
   void initState() {
-    fetchInitialData();
     super.initState();
-  }
-
-  fetchInitialData() {
-    movieDetail = movieServices.getMovieDetail(widget.movieId);
-    movieRecommendationModel = movieServices.getMovieRecommendations(
-      widget.movieId,
-    );
-    setState(() {});
   }
 
   @override
@@ -164,16 +154,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                     itemBuilder: (context, index) {
                                       return InkWell(
                                         onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MovieDetailPage(
-                                                    movieId:
-                                                        movie.movies[index].id,
-                                                  ),
-                                            ),
-                                          );
+                                          // Navigate
                                         },
                                         child: Image.network(
                                           "$imageUrl${movie.movies[index].posterPath}",
